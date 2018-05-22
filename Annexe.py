@@ -28,25 +28,18 @@ class Player:
 
 
 def CreatBoard():
-    Board = [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]
-    return Board
+    return [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]
 
 
 def PrintBoard(Board):
     j = 0
     print("   A B C")
-    while j < 3:
+    for j in range(3):
         print(j + 1, " ", end="")
-        i = 0
-        while i < 3:
-            print(Board[j][i], end="")
-            i += 1
-            if i != 3:
-                print("|", end="")
-            else:
-                print("")
-        j += 1
-        if j != 3:
+        for i in range(1, 4):
+            print(Board[j][i - 1], end="")
+            print("|", end="") if i != 3 else print("")
+        if j != 2:
             print("  -------")
     print("")
 
@@ -58,7 +51,6 @@ def GetName():
         if type(name) == str:
             if len(name) < 2:
                 name = None
-                print("Un vrai nom svp")
     return name.capitalize()
 
 
@@ -81,7 +73,7 @@ def get_ia(fiche):
     answer = None
     res = ("1", "2")
     while answer not in res:
-        answer = input("Qu'elle niveau d'IA (1 ou 2) ?")
+        answer = input("Qu'elle niveau d'IA (1 ou 2) ? ")
     if answer == "1":
         return fiche["Low, A256W193SD96"]
     else:
@@ -90,30 +82,26 @@ def get_ia(fiche):
 
 def restart():
   answer = None
-  res = ('oui', 'non', "change")
+  res = ('oui', 'non', "changer")
   while answer not in res:
-      answer = str(input("Voulez vous rejouer ?\n-\"Oui\" pour rejouer directement\n-\"Non\" pour quitter le jeu\n"
-                         "-\"Change\" pour changer de joueur\n").lower())
+      answer = str(input("Voulez vous rejouer ?\n\"Oui\" pour rejouer directement\n\"Non\" pour quitter le jeu\n"
+                         "\"Changer\" pour changer de joueur\n").lower())
   return answer
 
 
 def ChooseFirstPLayer(Player1, Player2):
-    print("On va jouer a pile ou face si c'est pile le premier joueur sera {} si c'est face le premier joueur sera {}".format(Player1.nom, Player2.nom))
+    # print("On va jouer a pile ou face si c'est pile le premier joueur sera {} si c'est face le premier joueur sera {}".format(Player1.nom, Player2.nom))
     check = random.randrange(0, 2)
     if check == 0:
-        print("C'est pile le premier joueur est donc %s" % Player1.nom)
+        # print("C'est pile le premier joueur est donc %s" % Player1.nom)
         return Player1
     else:
-        print("C'est face le premier joueur est donc %s" % Player2.nom)
+        # print("C'est face le premier joueur est donc %s" % Player2.nom)
         return Player2
 
 
 def isplaceable(choice, board):
-    j = ord(choice[0]) - 97
-    i = int(choice[1]) - 1
-    if board[i][j] == ' ':
-        return 1
-    return 0
+    return True if board[int(choice[1]) - 1][ord(choice[0]) - 97] == ' ' else False
 
 
 def save(fiche):
@@ -126,7 +114,7 @@ def choose_mode_game():
     res = ("1", "2", "3")
     answer = None
     while answer not in res:
-        answer = input("Choisissez votre mode de jeu:\n-1 Pour humain vs L'IA\n-2 pour Humain vs humain\n"
+        answer = input("Choisissez votre mode de jeu:\n-1 Pour humain vs IA\n-2 pour humain vs humain\n"
                        "-3 Pour IA vs IA\n")
     return answer
 

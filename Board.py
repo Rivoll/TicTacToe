@@ -36,6 +36,14 @@ def count_diag1(board, symbol):
         j += 1
     return count
 
+def count_diag1(board, symbol):
+    count = 0
+    for i in range(3):
+        if board[i][i] == symbol:
+            count += 1
+        elif board[i][i] != " ":
+            return 0
+    return count
 
 def count_diag2(board, symbol):
     i = 2

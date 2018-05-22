@@ -1,18 +1,14 @@
-import random
-import pickle
-import math
-from Annexe import *
-from Board import *
 from IA_tic_tac_toe import *
 
 DRAW = 2
 WIN = 1
+CONTINUE = 0
 
 def place(board, symbol):
     choice = None
     res = ("a1", "a2", "a3", "b1", "b2", "b3", "c1", "c2", "c3")
     while choice not in res or not isplaceable(choice, board):
-        print("Votre symbole est: %s" % symbol)
+        print("ton symbole est: %s" % symbol)
         choice = input("Choisissez la case sur laquelle vous voulez jouer \nDe A a C et de 1 a 3\n").lower()
     j = ord(choice[0]) - 97
     i = int(choice[1]) - 1
@@ -54,23 +50,24 @@ def Game(Player1, Player2, Board):
     else:
         symbol = "O"
     PrintBoard(Board)
-    while state == 0:
+    while True:
         state = Turn(actual_player, Board, symbol, nb_turn)
         if state == DRAW:
+            PrintBoard(Board)
             Player1.addDraw()
             Player2.addDraw()
-            print("Egalite !\n")
+            print("Egalite !\n-------------------------")
             break
         elif state == WIN:
             PrintBoard(Board)
             if actual_player == Player1:
                 Player1.addWin()
                 Player2.addLose()
-                print("Le gagnant est le joueur %s !\n" % Player1.nom)
+                print("Le gagnant est le joueur %s !\n-------------------------" % Player1.nom)
             else:
                 Player1.addLose()
                 Player2.addWin()
-                print("Le gagnant est le joueur %s !\n" % Player2.nom)
+                print("Le gagnant est le joueur %s !\n-------------------------" % Player2.nom)
             break
         if actual_player == Player1:
             actual_player = Player2
@@ -83,7 +80,6 @@ def Game(Player1, Player2, Board):
         nb_turn += 1
         PrintBoard(Board)
 
-
 def get_players(fiche, game_mode):
     if game_mode == "3":
         print("Vous avez choisis un combat entre IA\nVeuillez choisir le niveau de la premiere IA")
@@ -91,7 +87,6 @@ def get_players(fiche, game_mode):
         print("Veuillez Choisir le niveau de la deuxieme IA")
         Player2 = get_ia(fiche)
     elif game_mode == "1":
-        print("Vous avez choisis un combat humain contre IA\nQui etes vous ?")
         player_name = GetName()
         if fiche.get(player_name) is None:
             fiche = add_player(fiche, player_name)
@@ -103,7 +98,7 @@ def get_players(fiche, game_mode):
         print("Veuillez choisir le niveau de IA")
         Player1 = get_ia(fiche)
     else:
-        print("Vous avez choisis un combat humain contre humain\nLe nom de premier joueur est... d'ailleurs...")
+        print("Vous avez choisis un combat joueur contre joueur\nLe joueur 1")
         player_name = GetName()
         if fiche.get(player_name) is None:
             fiche = add_player(fiche, player_name)
@@ -113,7 +108,7 @@ def get_players(fiche, game_mode):
         else:
             print("Un plaisir de vous revoir %s" % player_name)
             Player2 = fiche[player_name]
-        print("Et le second joueur...")
+        print("Le joueur 2")
         player_name = GetName()
         if fiche.get(player_name) is None:
             fiche = add_player(fiche, player_name)
@@ -126,14 +121,14 @@ def get_players(fiche, game_mode):
 
 
 def main():
-    play = 'change'
+    play = 'changer'
     fiche = get_list_players()
-    if fiche.get("Low IA") is None:
+    if fiche.get("Low, A256W193SD96") is None:
         fiche["Low, A256W193SD96"] = Player("Low, A256W193SD96", "bot")
-    if fiche.get("Invicible") is None:
+    if fiche.get("Invicible, A2048Z4872") is None:
         fiche["Invicible, A2048Z4872"] = Player("Invicible, B2048Z4872", "bot")
-    while play == "oui" or play == "change":
-        if play == "change":
+    while play == "oui" or play == "changer":
+        if play == "changer":
             infos = get_players(fiche, choose_mode_game())
             fiche = infos[0]
             Player1 = infos[1]
@@ -143,10 +138,11 @@ def main():
         print("A l'issu de cette partie voici le stats des joueurs : ")
         Player1.describe()
         Player2.describe()
+        print("-------------------------")
         play = restart()
         save(fiche)
     save(fiche)
-    print("A la prochaine ;-)")
+    print("Game over")
 
 
 if __name__ == "__main__":
